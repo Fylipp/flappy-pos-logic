@@ -13,6 +13,8 @@ namespace FlappyPosLogic {
         [SerializeField] private Text _maxScoreText;
         [SerializeField] private Text _runningScoreText;
         [SerializeField] private Text _generationText;
+        [SerializeField] private Text _birdsAliveText;
+        [SerializeField] private Text _gameSpeedText;
 
         [SerializeField] private float _obstacleInterval = 5;
 
@@ -29,13 +31,17 @@ namespace FlappyPosLogic {
             NextGeneration();
         }
 
-        private void Update() {
-            if (Birds.Count(b => b.Alive) == 0) {
+        private void Update()
+        {
+            var birdsAlive = Birds.Count(b => b.Alive);
+            if (birdsAlive == 0) {
                 _maxScore = Mathf.Max(_maxScore, Birds.Select(b => b.Score).Max());
                 _maxScoreText.text = "Max. Score: " + _maxScore.ToString("n2");
                 NextGeneration();
             } else {
                 _runningScoreText.text = "Score: " + Birds.Select(b => b.Score).Max().ToString("n2");
+                _birdsAliveText.text = "Alive: " + birdsAlive;
+                _gameSpeedText.text = "X" + Time.timeScale;
             }
         }
 
@@ -129,10 +135,11 @@ namespace FlappyPosLogic {
             return new Network(layers);
         }
 
-        private Bird CreateBirdFromNetwork(Network network, Gate next) {
+        private Bird CreateBirdFromNetwork(Network network, Gate next)
+        {
             var bird = Instantiate(_birdPrefab, _dynamics);
 
-            bird.transform.position = Vector2.zero;
+            bird.transform.position = Vector2.zero; //+ new Vector2(0, Random.Range(-1, 1));
             bird.NextGate = next;
             bird.Network = network;
 
