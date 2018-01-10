@@ -5,3 +5,9 @@ A feed-forward network simulation for a school presentation. The network has 2 i
 ![Network](network.png)
 
 ![Screenshot](screenshot.png)
+
+## Controls
+
+1, 2, 3, 4, 5 - Control simulation speed
+
+R - Restart simulation
